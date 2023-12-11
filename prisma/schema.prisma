@@ -1,0 +1,127 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model answer_tb {
+  id          Int         @id(map: "answer_tb_pk") @default(autoincrement())
+  answer      String
+  is_correct  Boolean
+  question_id Int
+  created_at  DateTime    @default(now()) @db.Timestamp(6)
+  updated_at  DateTime    @default(now()) @db.Timestamp(6)
+  question_tb question_tb @relation(fields: [question_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "answer_tb_fk0")
+}
+
+model class_type_tb {
+  id                 Int                @id(map: "class_type_tb_pk") @default(autoincrement())
+  name               Int
+  type_investment_id Int
+  created_at         DateTime           @default(now()) @db.Timestamp(6)
+  updated_at         DateTime           @default(now()) @db.Timestamp(6)
+  type_investment_tb type_investment_tb @relation(fields: [type_investment_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "class_type_tb_fk0")
+  investment_tb      investment_tb[]
+}
+
+model investment_tb {
+  id                 Int                  @id(map: "investment_tb_pk") @default(autoincrement())
+  name               Int
+  price              Float
+  performance_annual Float
+  expires_in         DateTime             @db.Timestamp(6)
+  class_type_id      Int
+  created_at         DateTime             @default(now()) @db.Timestamp(6)
+  updated_at         DateTime             @default(now()) @db.Timestamp(6)
+  class_type_tb      class_type_tb        @relation(fields: [class_type_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "investment_tb_fk0")
+  user_investment_tb user_investment_tb[]
+}
+
+model lesson_tb {
+  id          Int           @id(map: "lesson_tb_pk") @default(autoincrement())
+  name        String        @db.Char(120)
+  module_id   Int
+  created_at  DateTime      @default(now()) @db.Timestamp(6)
+  updated_at  DateTime      @default(now()) @db.Timestamp(6)
+  module_tb   module_tb     @relation(fields: [module_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "lesson_tb_fk0")
+  question_tb question_tb[]
+}
+
+model module_tb {
+  id         Int         @id(map: "module_tb_pk") @default(autoincrement())
+  name       String      @unique @db.Char(100)
+  level      Int
+  created_at DateTime    @default(now()) @db.Timestamp(6)
+  updated_at DateTime    @default(now()) @db.Timestamp(6)
+  lesson_tb  lesson_tb[]
+}
+
+model profile_invest_tb {
+  id         Int      @id(map: "profile_invest_tb_pk") @default(autoincrement())
+  name       String   @db.Char(50)
+  created_at DateTime @default(now()) @db.Timestamp(6)
+  updated_at DateTime @default(now()) @db.Timestamp(6)
+}
+
+model progression_user_tb {
+  id                 Int      @id(map: "progression_user_tb_pk") @default(autoincrement())
+  user_id            Int      @unique
+  module_level_id    Int
+  profile_invest_id  Int?
+  progression_status String   @db.Char(30)
+  created_at         DateTime @default(now()) @db.Timestamp(6)
+  updated_at         DateTime @default(now()) @db.Timestamp(6)
+}
+
+model question_tb {
+  id         Int         @id(map: "question_tb_pk") @default(autoincrement())
+  question   String
+  lesson_id  Int
+  created_at DateTime    @default(now()) @db.Timestamp(6)
+  updated_at DateTime    @default(now()) @db.Timestamp(6)
+  answer_tb  answer_tb[]
+  lesson_tb  lesson_tb   @relation(fields: [lesson_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "question_tb_fk0")
+}
+
+model type_investment_tb {
+  id            Int             @id(map: "type_investment_tb_pk") @default(autoincrement())
+  name          Int
+  created_at    DateTime        @default(now()) @db.Timestamp(6)
+  updated_at    DateTime        @default(now()) @db.Timestamp(6)
+  class_type_tb class_type_tb[]
+}
+
+model user_access_tb {
+  id         Int       @id(map: "user_access_tb_pk") @default(autoincrement())
+  access     String    @unique @db.Char(100)
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+  updated_at DateTime? @default(now()) @db.Timestamp(6)
+  user_tb    user_tb[]
+}
+
+model user_investment_tb {
+  id            Int           @id(map: "user_investment_tb_pk") @default(autoincrement())
+  user_id       Int
+  investment_id Int
+  amount        Float
+  bought_at     Int           @default(autoincrement())
+  created_at    DateTime      @default(now()) @db.Timestamp(6)
+  updated_at    DateTime      @default(now()) @db.Timestamp(6)
+  user_tb       user_tb       @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_investment_tb_fk0")
+  investment_tb investment_tb @relation(fields: [investment_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_investment_tb_fk1")
+}
+
+model user_tb {
+  id                 Int                  @id(map: "user_tb_pk") @default(autoincrement())
+  name               String               @db.Char(150)
+  email              String               @unique @db.Char(150)
+  password           String               @db.Char(100)
+  created_at         DateTime             @default(now()) @db.Timestamp(6)
+  updated_at         DateTime             @default(now()) @db.Timestamp(6)
+  user_access_id     Int
+  user_investment_tb user_investment_tb[]
+  user_access_tb     user_access_tb       @relation(fields: [user_access_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_access_tb_fk0")
+}
