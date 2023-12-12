@@ -4,6 +4,7 @@ import { UserModule } from './CrudTables/user/user.module';
 import { AuthModule } from './AccessControl/auth/auth.module';
 import { CryptModule } from './AccessControl/crypt/crypt.module';
 import { AccessUserModule } from './CrudTables/access-user/access-user.module';
+import { TypeInvestmentModule } from './CrudTables/type-investment/type-investment.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { AccessUserModule } from './CrudTables/access-user/access-user.module';
     AuthModule,
     CryptModule,
     AccessUserModule,
+    TypeInvestmentModule,
   ],
 })
 export class AppModule {}

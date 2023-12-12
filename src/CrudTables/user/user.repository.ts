@@ -45,7 +45,7 @@ export class UserRepository {
       },
       data: {
         name: updateUserDto.name,
-        password: updateUserDto.password,
+        updated_at: new Date(),
       },
     });
   }

@@ -72,9 +72,9 @@ model question_tb {
 
 model type_investment_tb {
   id            Int             @id(map: "type_investment_tb_pk") @default(autoincrement())
-  name          Int
   created_at    DateTime?       @default(now()) @db.Timestamp(6)
   updated_at    DateTime?       @default(now()) @db.Timestamp(6)
+  name          String
   class_type_tb class_type_tb[]
 }
 
