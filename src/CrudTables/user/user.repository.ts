@@ -39,7 +39,15 @@ export class UserRepository {
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+    return this.prismaService.user_tb.update({
+      where: {
+        id,
+      },
+      data: {
+        name: updateUserDto.name,
+        password: updateUserDto.password,
+      },
+    });
   }
 
   remove(id: number) {

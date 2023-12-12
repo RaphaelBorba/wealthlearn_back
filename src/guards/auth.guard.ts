@@ -6,8 +6,8 @@ import {
   Injectable,
   mixin,
 } from '@nestjs/common';
-import { AuthService } from 'src/auth/auth.service';
-import { UserService } from 'src/user/user.service';
+import { AuthService } from 'src/AccessControl/auth/auth.service';
+import { UserService } from 'src/CrudTables/user/user.service';
 
 export const AuthGuard = (isAdmin?: boolean) => {
   @Injectable()

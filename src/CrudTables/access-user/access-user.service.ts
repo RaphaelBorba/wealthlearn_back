@@ -10,8 +10,8 @@ import { AccessUserRepository } from './access-user.repository';
 export class AccessUserService {
   constructor(private readonly accessUserRepository: AccessUserRepository) {}
 
-  create(createAccessUserDto: CreateAccessUserDto) {
-    const existAccess = this.accessUserRepository.findByAccess(
+  async create(createAccessUserDto: CreateAccessUserDto) {
+    const existAccess = await this.accessUserRepository.findByAccess(
       createAccessUserDto.access,
     );
 
@@ -20,8 +20,8 @@ export class AccessUserService {
     return this.accessUserRepository.create(createAccessUserDto);
   }
 
-  findAll() {
-    return this.accessUserRepository.findAll();
+  async findAll() {
+    return await this.accessUserRepository.findAll();
   }
 
   async remove(id: number) {

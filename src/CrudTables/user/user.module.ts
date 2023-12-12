@@ -3,8 +3,8 @@ import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { UserRepository } from './user.repository';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { AuthModule } from 'src/auth/auth.module';
-import { CryptModule } from 'src/crypt/crypt.module';
+import { AuthModule } from 'src/AccessControl/auth/auth.module';
+import { CryptModule } from 'src/AccessControl/crypt/crypt.module';
 
 @Module({
   controllers: [UserController],

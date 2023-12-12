@@ -3,8 +3,8 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { PrismaModule } from 'src/prisma/prisma.module';
-import { CryptModule } from 'src/crypt/crypt.module';
-import { UserModule } from 'src/user/user.module';
+import { CryptModule } from 'src/AccessControl/crypt/crypt.module';
+import { UserModule } from 'src/CrudTables/user/user.module';
 
 @Module({
   imports: [

@@ -1,15 +1,14 @@
 import {
   BadRequestException,
   Injectable,
-  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { UserService } from 'src/user/user.service';
+import { UserService } from 'src/CrudTables/user/user.service';
 import { RegisterUserDto } from './dto/register-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
-import { CryptService } from 'src/crypt/crypt.service';
+import { CryptService } from 'src/AccessControl/crypt/crypt.service';
 import { JwtService } from '@nestjs/jwt';
-import { User } from 'src/user/entities/user.entity';
+import { User } from 'src/CrudTables/user/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -24,7 +23,7 @@ export class AuthService {
   async login(body: LoginUserDto) {
     const existUser = await this.userService.findByEmail(body.email);
     if (!existUser) {
-      throw new NotFoundException('Email não cadastrado!');
+      throw new UnauthorizedException('Email ou senha invalida!');
     }
     const passwordIsValid = this.cryptService.compareHash(
       existUser.password,
@@ -32,7 +31,7 @@ export class AuthService {
     );
 
     if (!passwordIsValid) {
-      throw new UnauthorizedException('Senha invalida!');
+      throw new UnauthorizedException('Email ou senha invalida!');
     }
 
     return this.createToken(existUser);
