@@ -23,7 +23,12 @@ export class TypeInvestmentService {
   }
 
   async findOne(id: number) {
-    return await this.typeInvestmentRepository.findOne(id);
+    const type = await this.typeInvestmentRepository.findOne(id);
+
+    if (!type)
+      throw new NotFoundException('Tipo de investimento não encontrado!');
+
+    return type;
   }
 
   async remove(id: number) {

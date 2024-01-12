@@ -17,7 +17,7 @@ model answer_tb {
 
 model class_type_tb {
   id                 Int                @id(map: "class_type_tb_pk") @default(autoincrement())
-  name               Int
+  name               String
   type_investment_id Int
   created_at         DateTime?          @default(now()) @db.Timestamp(6)
   updated_at         DateTime?          @default(now()) @db.Timestamp(6)
@@ -27,7 +27,7 @@ model class_type_tb {
 
 model investment_tb {
   id                 Int                  @id(map: "investment_tb_pk") @default(autoincrement())
-  name               Int
+  name               String
   price              Float
   performance_annual Float
   expires_in         DateTime             @db.Timestamp(6)

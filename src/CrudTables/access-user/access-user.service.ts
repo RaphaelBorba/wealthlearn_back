@@ -24,6 +24,16 @@ export class AccessUserService {
     return await this.accessUserRepository.findAll();
   }
 
+  async findOne(id: number) {
+    const exist = await this.accessUserRepository.findById(id);
+
+    if (!exist) {
+      throw new NotFoundException('Acesso de usuário não encontrado!');
+    }
+
+    return exist;
+  }
+
   async remove(id: number) {
     const existId = await this.accessUserRepository.findById(id);
 

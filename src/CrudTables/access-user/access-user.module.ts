@@ -10,6 +10,6 @@ import { UserModule } from 'src/CrudTables/user/user.module';
   controllers: [AccessUserController],
   providers: [AccessUserService, PrismaService, AccessUserRepository],
   imports: [AuthModule, UserModule],
-  exports: [AccessUserService],
+  exports: [AccessUserService, AccessUserRepository],
 })
 export class AccessUserModule {}

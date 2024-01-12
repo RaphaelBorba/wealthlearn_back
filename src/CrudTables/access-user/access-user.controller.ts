@@ -11,6 +11,8 @@ import { AccessUserService } from './access-user.service';
 import { CreateAccessUserDto } from './dto/create-access-user.dto';
 import { AuthGuard } from 'src/guards/auth.guard';
 
+// ACCESS CONTROL FOR THE USERS, ADMINS, COMMUN USERS, ...
+
 @Controller('access-user')
 @UseGuards(AuthGuard(true))
 export class AccessUserController {

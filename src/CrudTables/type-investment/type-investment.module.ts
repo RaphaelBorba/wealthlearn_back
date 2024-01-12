@@ -9,6 +9,7 @@ import { UserModule } from '../user/user.module';
 @Module({
   controllers: [TypeInvestmentController],
   providers: [TypeInvestmentService, PrismaService, TypeInvestmentRepository],
+  exports: [TypeInvestmentService],
   imports: [AuthModule, UserModule],
 })
 export class TypeInvestmentModule {}
