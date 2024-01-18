@@ -8,6 +8,7 @@ import { TypeInvestmentModule } from '../type-investment/type-investment.module'
 @Module({
   controllers: [ClassTypeController],
   providers: [ClassTypeService, PrismaService, ClassTypeRepository],
+  exports: [ClassTypeService],
   imports: [TypeInvestmentModule],
 })
 export class ClassTypeModule {}

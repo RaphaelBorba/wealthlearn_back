@@ -8,6 +8,7 @@ import { ClassTypeModule } from './CrudTables/class-type/class-type.module';
 import { CryptModule } from './AccessControl/crypt/crypt.module';
 import { AuthModule } from './AccessControl/auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { InvestmentsModule } from './CrudTables/investments/investments.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { PrismaModule } from './prisma/prisma.module';
     AccessUserModule,
     TypeInvestmentModule,
     ClassTypeModule,
+    InvestmentsModule,
   ],
 })
 export class AppModule {}
