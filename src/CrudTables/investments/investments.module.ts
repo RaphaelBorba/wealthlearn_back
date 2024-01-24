@@ -9,5 +9,6 @@ import { ClassTypeModule } from '../class-type/class-type.module';
   controllers: [InvestmentsController],
   providers: [InvestmentsService, InvestmentsRepository, PrismaService],
   imports: [ClassTypeModule],
+  exports: [InvestmentsService],
 })
 export class InvestmentsModule {}
