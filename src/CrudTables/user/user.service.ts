@@ -50,6 +50,12 @@ export class UserService {
     return existUser;
   }
 
+  async findUserForProfilePage(id: number) {
+    await this.findOne(id);
+
+    return this.userRepository.findUserForProfilePage(id);
+  }
+
   async findByEmail(email: string) {
     return await this.userRepository.findEmail(email);
   }

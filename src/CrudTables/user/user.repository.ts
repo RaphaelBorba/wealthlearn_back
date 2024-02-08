@@ -30,6 +30,22 @@ export class UserRepository {
     });
   }
 
+  findUserForProfilePage(id) {
+    return this.prismaService.user_tb.findFirst({
+      where: {
+        id,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        user_access_id: true,
+        created_at: true,
+        updated_at: true,
+      },
+    });
+  }
+
   findEmail(email: string) {
     return this.prismaService.user_tb.findFirst({
       where: {

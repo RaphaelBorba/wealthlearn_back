@@ -22,4 +22,9 @@ export class UserController {
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);
   }
+  @UseGuards(AuthGuard(false))
+  @Get('/findUserForProfilePage/:id')
+  findUserForProfilePage(@Param('id') id: string) {
+    return this.userService.findUserForProfilePage(+id);
+  }
 }
