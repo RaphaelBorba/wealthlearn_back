@@ -30,7 +30,7 @@ export class UserRepository {
     });
   }
 
-  findUserForProfilePage(id) {
+  findUserForProfilePage(id: number) {
     return this.prismaService.user_tb.findFirst({
       where: {
         id,
