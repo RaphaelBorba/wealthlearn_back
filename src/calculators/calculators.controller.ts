@@ -8,6 +8,6 @@ export class CalculatorsController {
 
   @Post('/simple-tax')
   create(@Body() createCalculatorDto: CreateCalculatorDto) {
-    return this.calculatorsService.simpleTaxCalculator(createCalculatorDto);
+    return this.calculatorsService.calculateSimpleTax(createCalculatorDto);
   }
 }

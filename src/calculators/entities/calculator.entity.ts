@@ -2,5 +2,6 @@ export class Calculator {
   amount: number;
   tax: number;
   time: number;
-  timeCalc: 'year' | 'month';
+  typeTax: 'year' | 'month';
+  typeTime: 'year' | 'month';
 }
