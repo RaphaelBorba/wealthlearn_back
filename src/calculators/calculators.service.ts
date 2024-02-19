@@ -7,8 +7,9 @@ import {
 type TimeTaxsElement = {
   time: number;
   tax: number;
-  amount: number;
   totalTax: number;
+  totalAmount: number;
+  investedMoney: number;
 };
 
 @Injectable()
@@ -41,7 +42,13 @@ export class CalculatorsService {
     tax: number,
   ): TimeTaxsElement[] {
     const timeTaxs: TimeTaxsElement[] = [
-      { tax: 0, time: 0, amount: amount, totalTax: 0 },
+      {
+        tax: 0,
+        time: 0,
+        totalTax: 0,
+        investedMoney: amount,
+        totalAmount: amount,
+      },
     ];
 
     for (let i = 0; i < time; i++) {
@@ -50,8 +57,9 @@ export class CalculatorsService {
       timeTaxs.push({
         time: i + 1,
         tax: periodTax,
+        investedMoney: amount,
         totalTax: previous.totalTax + periodTax,
-        amount,
+        totalAmount: previous.totalAmount + periodTax,
       });
     }
 
