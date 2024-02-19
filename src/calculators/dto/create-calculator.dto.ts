@@ -1,6 +1,6 @@
 import { IsIn, IsNumber } from 'class-validator';
 
-export class CreateCalculatorDto {
+export class SimpleTaxCalculatorDto {
   @IsNumber()
   amount: number;
 
@@ -15,4 +15,9 @@ export class CreateCalculatorDto {
 
   @IsIn(['year', 'month'])
   typeTime: 'year' | 'month';
+}
+
+export class CompostTaxCalcuatorDto extends SimpleTaxCalculatorDto {
+  @IsNumber()
+  monthValue: number;
 }

@@ -1,64 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCalculatorDto } from './dto/create-calculator.dto';
+import {
+  CompostTaxCalcuatorDto,
+  SimpleTaxCalculatorDto,
+} from './dto/create-calculator.dto';
 
 type TimeTaxsElement = {
   time: number;
   tax: number;
-  totalAmount: number;
+  amount: number;
   totalTax: number;
 };
 
 @Injectable()
 export class CalculatorsService {
-  /* simpleTaxCalculator(createCalculatorDto: CreateCalculatorDto) {
-    console.log(createCalculatorDto);
-    const amount = createCalculatorDto.amount;
-    let tax = createCalculatorDto.tax / 100;
-    if (createCalculatorDto.typeTime === 'year') {
-      const years = createCalculatorDto.time;
-
-      if (createCalculatorDto.typeTax === 'month') tax = tax * 12;
-      console.log(tax);
-      const timeTaxs: TimeTaxsElement[] = [];
-      timeTaxs.push({ tax: 0, time: 0, totalAmount: amount, totalTax: 0 });
-      for (let i = 0; i < years; i++) {
-        const yearTax = tax * amount;
-        timeTaxs.push({
-          time: i + 1,
-          tax: yearTax,
-          totalTax: timeTaxs[timeTaxs.length - 1].totalTax + yearTax,
-          totalAmount: timeTaxs[timeTaxs.length - 1].totalAmount + yearTax,
-        });
-      }
-      return { timeType: 'year', timeTaxs };
-    } else if (createCalculatorDto.typeTime === 'month') {
-      const months = createCalculatorDto.time;
-
-      if (createCalculatorDto.typeTax === 'year') tax = tax / 12;
-      const timeTaxs: TimeTaxsElement[] = [];
-      timeTaxs.push({ tax: 0, time: 0, totalAmount: amount, totalTax: 0 });
-      for (let i = 0; i < months; i++) {
-        const monthTax = tax * amount;
-        timeTaxs.push({
-          time: i + 1,
-          tax: monthTax,
-          totalTax: timeTaxs[timeTaxs.length - 1].totalTax + monthTax,
-          totalAmount: timeTaxs[timeTaxs.length - 1].totalAmount + monthTax,
-        });
-      }
-      return { timeType: 'month', timeTaxs };
-    }
-    return;
-  } */
-
-  calculateSimpleTax(createCalculatorDto: CreateCalculatorDto) {
+  calculateSimpleTax(simpleTaxCalculatorDto: SimpleTaxCalculatorDto) {
     const {
       amount,
       tax: taxRate,
       typeTime,
       typeTax,
       time,
-    } = createCalculatorDto;
+    } = simpleTaxCalculatorDto;
     let tax = taxRate / 100;
 
     if (typeTime === 'year' && typeTax === 'month') tax *= 12;
@@ -79,7 +41,7 @@ export class CalculatorsService {
     tax: number,
   ): TimeTaxsElement[] {
     const timeTaxs: TimeTaxsElement[] = [
-      { tax: 0, time: 0, totalAmount: amount, totalTax: 0 },
+      { tax: 0, time: 0, amount: amount, totalTax: 0 },
     ];
 
     for (let i = 0; i < time; i++) {
@@ -89,10 +51,51 @@ export class CalculatorsService {
         time: i + 1,
         tax: periodTax,
         totalTax: previous.totalTax + periodTax,
-        totalAmount: previous.totalAmount + periodTax,
+        amount,
       });
     }
 
     return timeTaxs;
+  }
+
+  calculateCompostTax(compostTaxCalculatorDto: CompostTaxCalcuatorDto) {
+    const {
+      amount,
+      monthValue,
+      tax: taxRate,
+      time,
+      typeTime,
+    } = compostTaxCalculatorDto;
+    const tax = taxRate / 100;
+    const totalTime = typeTime === 'year' ? time * 12 : time;
+    const data = [
+      {
+        time: 0,
+        tax: 0,
+        investedMoney: amount,
+        totalTax: 0,
+        totalAmount: amount,
+      },
+    ];
+
+    for (let i = 0; i < totalTime; i++) {
+      const previous = data[data.length - 1];
+      const actualMoney = previous.totalAmount;
+      const actualTax = actualMoney * tax;
+
+      data.push({
+        time: i + 1,
+        tax: parseFloat(actualTax.toFixed(2)),
+        investedMoney: parseFloat(
+          (previous.investedMoney + monthValue).toFixed(2),
+        ),
+        totalTax: parseFloat((previous.totalTax + actualTax).toFixed(2)),
+        totalAmount: parseFloat(
+          (actualMoney + actualTax + monthValue).toFixed(2),
+        ),
+      });
+    }
+
+    return data;
   }
 }
