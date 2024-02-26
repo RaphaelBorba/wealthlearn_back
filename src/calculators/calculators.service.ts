@@ -110,7 +110,7 @@ export class CalculatorsService {
       30000, 50000,
     ];
     const years = [10, 15, 20, 25, 30, 35, 40];
-    const { amount, tax } = financialGoalData;
+    const { amount, tax, goal } = financialGoalData;
     const result = [];
 
     for (let i = 0; i < contributions.length; i++) {
@@ -124,7 +124,7 @@ export class CalculatorsService {
       }
       result.push(preFinal);
     }
-    return result;
+    return { goal, values: result };
   }
 
   FV(PMT: number, i: number, n: number, PV: number) {
