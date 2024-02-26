@@ -21,3 +21,14 @@ export class CompostTaxCalcuatorDto extends SimpleTaxCalculatorDto {
   @IsNumber()
   monthValue: number;
 }
+
+export class FinancialGoalCalculatorDto {
+  @IsNumber()
+  amount: number;
+
+  @IsNumber()
+  tax: number;
+
+  @IsNumber()
+  goal: number;
+}

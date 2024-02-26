@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import {
   CompostTaxCalcuatorDto,
+  FinancialGoalCalculatorDto,
   SimpleTaxCalculatorDto,
 } from './dto/create-calculator.dto';
 
@@ -93,17 +94,42 @@ export class CalculatorsService {
 
       data.push({
         time: i + 1,
-        tax: parseFloat(actualTax.toFixed(2)),
-        investedMoney: parseFloat(
-          (previous.investedMoney + monthValue).toFixed(2),
-        ),
-        totalTax: parseFloat((previous.totalTax + actualTax).toFixed(2)),
-        totalAmount: parseFloat(
-          (actualMoney + actualTax + monthValue).toFixed(2),
-        ),
+        tax: actualTax,
+        investedMoney: previous.investedMoney + monthValue,
+        totalTax: previous.totalTax + actualTax,
+        totalAmount: actualMoney + actualTax + monthValue,
       });
     }
 
-    return data;
+    return { timeTaxs: data, timeType: 'month' };
+  }
+
+  calculateFinancialGoal(financialGoalData: FinancialGoalCalculatorDto) {
+    const contributions = [
+      50, 100, 200, 300, 400, 500, 1000, 2000, 3000, 5000, 10000, 15000, 20000,
+      30000, 50000,
+    ];
+    const years = [10, 15, 20, 25, 30, 35, 40];
+    const { amount, tax } = financialGoalData;
+    const result = [];
+
+    for (let i = 0; i < contributions.length; i++) {
+      const contribution = contributions[i];
+      const preFinal = [];
+      for (let j = 0; j < years.length; j++) {
+        const year = years[j];
+        const final = this.FV(contribution, tax, year * 12, amount);
+
+        preFinal.push(final);
+      }
+      result.push(preFinal);
+    }
+    return result;
+  }
+
+  FV(PMT: number, i: number, n: number, PV: number) {
+    i = i / 100;
+
+    return PV * Math.pow(1 + i, n) + (PMT * (Math.pow(1 + i, n) - 1)) / i;
   }
 }
